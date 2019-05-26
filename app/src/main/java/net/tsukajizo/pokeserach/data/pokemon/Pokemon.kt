@@ -1,4 +1,4 @@
-package net.tsukajizo.pokeserach.data.api
+package net.tsukajizo.pokeserach.data.pokemon
 
 import com.google.gson.annotations.SerializedName
 
@@ -8,5 +8,6 @@ data class Pokemon(
     @SerializedName("height") val height:Int,
     @SerializedName("is_default") val isDefault:Boolean,
     @SerializedName("order") val order:Int,
-    @SerializedName("weight") val weight:Int
+    @SerializedName("weight") val weight:Int,
+    @SerializedName("sprites") val sprites:Sprites
 )

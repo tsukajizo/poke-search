@@ -1,11 +1,11 @@
 package net.tsukajizo.pokeserach
 
-import net.tsukajizo.pokeserach.data.api.Pokemon
+import net.tsukajizo.pokeserach.data.pokemon.Pokemon
 
 interface MainContract {
 
     interface View : BaseView<Presenter> {
-        fun showSearchedPokemon(pokemon:Pokemon)
+        fun showSearchedPokemon(pokemon: Pokemon)
 
         fun showAlertErrorSearch(name :String)
 

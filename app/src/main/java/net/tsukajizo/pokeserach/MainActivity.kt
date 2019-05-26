@@ -3,13 +3,13 @@ package net.tsukajizo.pokeserach
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.SearchView
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import net.tsukajizo.pokeserach.data.api.PokeApi
 import net.tsukajizo.pokeserach.data.api.PokeRepository
-import net.tsukajizo.pokeserach.data.api.Pokemon
+import net.tsukajizo.pokeserach.data.pokemon.Pokemon
+import net.tsukajizo.pokeserach.util.GlideImageLoader
 import net.tsukajizo.pokeserach.util.NumUtil
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -54,8 +54,11 @@ class MainActivity : AppCompatActivity() , MainContract.View{
     }
 
     override fun showSearchedPokemon(pokemon: Pokemon) {
+        Log.d("MainActivity","Pokemon:" + pokemon)
         pokeId.text = pokemon.id.toString()
         pokeName.text = pokemon.name
+        val loader = GlideImageLoader()
+        loader.load(pokeImage,pokemon.sprites.frontDefault)
     }
 
     override fun showAlertErrorSearch(name: String) {

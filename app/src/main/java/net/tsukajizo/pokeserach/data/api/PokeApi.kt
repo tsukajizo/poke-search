@@ -1,6 +1,7 @@
 package net.tsukajizo.pokeserach.data.api
 
 import io.reactivex.Single
+import net.tsukajizo.pokeserach.data.pokemon.Pokemon
 import retrofit2.http.GET
 import retrofit2.http.Path
 

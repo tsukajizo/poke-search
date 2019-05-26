@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PokeSerach</string>
+    <string name="no_item">\???</string>
 </resources>
