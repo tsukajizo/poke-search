@@ -1,5 +1,7 @@
-package net.tsukajizo.pokeserach
+package net.tsukajizo.pokeserach.main
 
+import net.tsukajizo.pokeserach.BasePresenter
+import net.tsukajizo.pokeserach.BaseView
 import net.tsukajizo.pokeserach.data.pokemon.Pokemon
 
 interface MainContract {

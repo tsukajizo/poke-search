@@ -1,4 +1,4 @@
-package net.tsukajizo.pokeserach
+package net.tsukajizo.pokeserach.main
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
+import net.tsukajizo.pokeserach.R
 import net.tsukajizo.pokeserach.data.api.PokeApi
 import net.tsukajizo.pokeserach.data.api.PokeRepository
 import net.tsukajizo.pokeserach.data.pokemon.Pokemon
@@ -16,7 +17,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity() , MainContract.View{
+class MainActivity : AppCompatActivity() , MainContract.View {
 
     private lateinit var presenter: MainContract.Presenter
 
@@ -31,7 +32,8 @@ class MainActivity : AppCompatActivity() , MainContract.View{
             .client(OkHttpClient().newBuilder().build())
             .build()
 
-        presenter = MainPresenter(this, PokeRepository(retrofit.create(PokeApi::class.java)))
+        presenter =
+            MainPresenter(this, PokeRepository(retrofit.create(PokeApi::class.java)))
         search.setOnQueryTextListener(object : android.support.v7.widget.SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(text: String?): Boolean {
                 if(text == null){

@@ -1,11 +1,12 @@
-package net.tsukajizo.pokeserach
+package net.tsukajizo.pokeserach.main
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import net.tsukajizo.pokeserach.data.api.PokeRepository
 import net.tsukajizo.pokeserach.data.pokemon.Pokemon
 import net.tsukajizo.pokeserach.data.pokemon.Sprites
 
-class MainPresenter(val mainView: MainContract.View, val repository: PokeRepository) : MainContract.Presenter {
+class MainPresenter(val mainView: MainContract.View, val repository: PokeRepository) :
+    MainContract.Presenter {
 
     init {
         mainView.setPresenter(this)
