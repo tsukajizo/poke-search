@@ -41,10 +41,10 @@ class MainActivity : AppCompatActivity() , MainContract.View {
         search.addTextChangedListener( object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {
                 error.text = ""
+                clearPokemon()
                 val input = s.toString()
                 if(input.isBlank()){
                     error.text = ""
-                    clearPokemon()
                 }else if(!Validator.validateInput(input)){
                   showAlertInputError()
                 } else if(NumUtil.isNum(input)){
