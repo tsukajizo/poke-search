@@ -4,7 +4,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import net.tsukajizo.pokeserach.data.api.PokeRepository
 import net.tsukajizo.pokeserach.data.pokemon.Pokemon
-import net.tsukajizo.pokeserach.data.pokemon.Sprites
 
 class MainPresenter(val mainView: MainContract.View, val repository: PokeRepository) :
     MainContract.Presenter {
@@ -13,14 +12,28 @@ class MainPresenter(val mainView: MainContract.View, val repository: PokeReposit
         mainView.setPresenter(this)
     }
 
+    var pokemonCount:Int = 0
+    var pokemons:List<Pokemon>? = null
+    var disposable: Disposable? = null;
+
     override fun start() {
-        // nothing to do
+        repository.fetchPokemonList()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ response ->
+                pokemonCount = response.count
+                pokemons = response.results
+            })
     }
 
-    var disposable: Disposable? = null;
+
 
     override fun searchPokemon(pokemonId: Int) {
         disposable?.dispose()
+        if(pokemonId > pokemonCount){
+            mainView.showAlertErrorSearch(pokemonId)
+            return
+        }
+
         disposable = repository.searchPokemon(pokemonId)
             .observeOn(AndroidSchedulers.mainThread())
             .onErrorReturn {
@@ -35,6 +48,12 @@ class MainPresenter(val mainView: MainContract.View, val repository: PokeReposit
 
     override fun searchPokemon(pokemonName: String) {
         disposable?.dispose()
+        if(pokemons?.filter { pokemon -> pokemon.name == pokemonName}!!.isEmpty()){
+            mainView.showAlertErrorSearch(pokemonName)
+            return
+        }
+
+
         repository.searchPokemon(pokemonName)
             .observeOn(AndroidSchedulers.mainThread())
             .onErrorReturn {

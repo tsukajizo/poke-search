@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import net.tsukajizo.pokeserach.R
@@ -59,6 +57,11 @@ class MainActivity : AppCompatActivity() , MainContract.View {
         })
     }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.start()
+    }
+
     override fun showSearchedPokemon(pokemon: Pokemon) {
 
         pokeId.text = if(!Pokemon.isUnknown(pokemon)) pokemon.id.toString() else "???"
@@ -73,11 +76,13 @@ class MainActivity : AppCompatActivity() , MainContract.View {
     }
 
     override fun showAlertErrorSearch(name: String) {
-        error.text = "name:" + name + " is not found"
+        error.text = String.format(getString(R.string.error_name_not_found),name)
+        showSearchedPokemon(Pokemon.getUnknownPokemon())
     }
 
     override fun showAlertErrorSearch(id: Int) {
-        error.text = "id:" + id + " is not found"
+        error.text = String.format(getString(R.string.error_id_not_found),id)
+        showSearchedPokemon(Pokemon.getUnknownPokemon())
     }
 
     override fun setPresenter(presenter: MainContract.Presenter) {
