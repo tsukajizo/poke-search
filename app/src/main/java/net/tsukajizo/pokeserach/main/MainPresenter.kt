@@ -60,8 +60,7 @@ class MainPresenter(val mainView: MainContract.View, val repository: PokeReposit
             return
         }
 
-
-        repository.searchPokemon(pokemonName)
+        disposable = repository.searchPokemon(pokemonName)
             .observeOn(AndroidSchedulers.mainThread())
             .onErrorReturn {
                 mainView.showAlertErrorSearch(pokemonName)
