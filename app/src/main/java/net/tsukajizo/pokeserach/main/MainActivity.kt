@@ -4,38 +4,26 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import net.tsukajizo.pokeserach.R
-import net.tsukajizo.pokeserach.data.api.PokeApi
 import net.tsukajizo.pokeserach.data.api.PokeRepository
 import net.tsukajizo.pokeserach.data.pokemon.Pokemon
 import net.tsukajizo.pokeserach.util.GlideImageLoader
 import net.tsukajizo.pokeserach.util.NumUtil
 import net.tsukajizo.pokeserach.util.Validator
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var presenter: MainContract.Presenter
+    private val repository: PokeRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://pokeapi.co/api/v2/")
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
-            .client(OkHttpClient().newBuilder().build())
-            .build()
-
-        presenter =
-            MainPresenter(this, PokeRepository(retrofit.create(PokeApi::class.java)))
+        presenter = MainPresenter(this, repository)
         search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 error.text = ""
