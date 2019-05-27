@@ -2,6 +2,8 @@ package net.tsukajizo.pokeserach.main
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
@@ -16,6 +18,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+
+
+
 
 class MainActivity : AppCompatActivity() , MainContract.View {
 
@@ -34,41 +39,45 @@ class MainActivity : AppCompatActivity() , MainContract.View {
 
         presenter =
             MainPresenter(this, PokeRepository(retrofit.create(PokeApi::class.java)))
-        search.setOnQueryTextListener(object : android.support.v7.widget.SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(text: String?): Boolean {
-                if(text == null){
-                    return false
-                }
-                if(NumUtil.isNum(text)){
-                    presenter.searchPokemon(Integer.parseInt(text))
+        search.addTextChangedListener( object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                error.text = ""
+                val input = s.toString()
+                if(NumUtil.isNum(input)){
+                    presenter.searchPokemon(Integer.parseInt(input))
                 }else{
-                    presenter.searchPokemon(text)
+                    presenter.searchPokemon(input)
                 }
-                return true
             }
 
-            override fun onQueryTextChange(p0: String?): Boolean {
-                // nothing to do
-                return false;
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
 
         })
     }
 
     override fun showSearchedPokemon(pokemon: Pokemon) {
-        Log.d("MainActivity","Pokemon:" + pokemon)
-        pokeId.text = pokemon.id.toString()
-        pokeName.text = pokemon.name
-        val loader = GlideImageLoader()
-        loader.load(pokeImage,pokemon.sprites.frontDefault)
+
+        pokeId.text = if(!Pokemon.isUnknown(pokemon)) pokemon.id.toString() else "???"
+        pokeName.text =  if(!Pokemon.isUnknown(pokemon)) pokemon.name else "???"
+        if(!Pokemon.isUnknown(pokemon)) {
+            error.text = ""
+            val loader = GlideImageLoader()
+            loader.load(pokeImage, pokemon.sprites.frontDefault)
+        }else{
+            pokeImage.setImageBitmap(null)
+        }
     }
 
     override fun showAlertErrorSearch(name: String) {
-        Toast.makeText(this,name + " is not found",Toast.LENGTH_SHORT).show()
+        error.text = "name:" + name + " is not found"
     }
 
     override fun showAlertErrorSearch(id: Int) {
-        Toast.makeText(this,"id:" + id + " is not found",Toast.LENGTH_SHORT).show()
+        error.text = "id:" + id + " is not found"
     }
 
     override fun setPresenter(presenter: MainContract.Presenter) {

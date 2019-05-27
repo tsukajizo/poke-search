@@ -10,4 +10,18 @@ data class Pokemon(
     @SerializedName("order") val order:Int,
     @SerializedName("weight") val weight:Int,
     @SerializedName("sprites") val sprites:Sprites
-)
+){
+    companion object {
+        const val UNKNOWN_POKEMON_ID = 0
+
+        fun getUnknownPokemon():Pokemon{
+            return Pokemon(UNKNOWN_POKEMON_ID,"???",0,false,0,0, Sprites("",""))
+        }
+
+        fun isUnknown(pokemon: Pokemon):Boolean{
+            return pokemon.id == UNKNOWN_POKEMON_ID
+        }
+    }
+}
+
+
