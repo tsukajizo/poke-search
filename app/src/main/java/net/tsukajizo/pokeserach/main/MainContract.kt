@@ -19,5 +19,6 @@ interface MainContract {
 
         fun searchPokemon(pokemonName:String)
 
+        fun dispose()
     }
 }

@@ -19,9 +19,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-
-
-class MainActivity : AppCompatActivity() , MainContract.View {
+class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var presenter: MainContract.Presenter
 
@@ -38,18 +36,20 @@ class MainActivity : AppCompatActivity() , MainContract.View {
 
         presenter =
             MainPresenter(this, PokeRepository(retrofit.create(PokeApi::class.java)))
-        search.addTextChangedListener( object : TextWatcher{
+        search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 error.text = ""
                 clearPokemon()
                 val input = s.toString()
-                if(input.isBlank()){
+                if (input.isBlank()) {
                     error.text = ""
-                }else if(!Validator.validateInput(input)){
-                  showAlertInputError()
-                } else if(NumUtil.isNum(input)){
+                    presenter.dispose()
+                } else if (!Validator.validateInput(input)) {
+                    showAlertInputError()
+                    presenter.dispose()
+                } else if (NumUtil.isNum(input)) {
                     presenter.searchPokemon(Integer.parseInt(input))
-                }else{
+                } else {
                     presenter.searchPokemon(input)
                 }
             }
@@ -68,34 +68,36 @@ class MainActivity : AppCompatActivity() , MainContract.View {
         presenter.start()
     }
 
-    private fun clearPokemon(){
+    private fun clearPokemon() {
         showPokemon(Pokemon.getUnknownPokemon())
     }
 
 
     override fun showPokemon(pokemon: Pokemon) {
-        pokeId.text = if(!Pokemon.isUnknown(pokemon)) pokemon.id.toString() else "???"
-        pokeName.text =  if(!Pokemon.isUnknown(pokemon)) pokemon.name else "???"
-        if(!Pokemon.isUnknown(pokemon)) {
+        pokeId.text = if (!Pokemon.isUnknown(pokemon)) pokemon.id.toString() else "???"
+        pokeName.text = if (!Pokemon.isUnknown(pokemon)) pokemon.name else "???"
+        if (pokemon.sprites.frontDefault == null) {
+            pokeImage.setImageDrawable(getDrawable(R.mipmap.unknown_image))
+        } else if (!Pokemon.isUnknown(pokemon)) {
             error.text = ""
             val loader = GlideImageLoader()
             loader.load(pokeImage, pokemon.sprites.frontDefault)
-        }else{
+        } else {
             pokeImage.setImageBitmap(null)
         }
     }
 
     override fun showAlertErrorSearch(name: String) {
-        error.text = String.format(getString(R.string.error_name_not_found),name)
+        error.text = String.format(getString(R.string.error_name_not_found), name)
         showPokemon(Pokemon.getUnknownPokemon())
     }
 
     override fun showAlertErrorSearch(id: Int) {
-        error.text = String.format(getString(R.string.error_id_not_found),id)
+        error.text = String.format(getString(R.string.error_id_not_found), id)
         showPokemon(Pokemon.getUnknownPokemon())
     }
 
-    private fun showAlertInputError(){
+    private fun showAlertInputError() {
         error.text = getString(R.string.error_input_incorrect_string)
     }
 

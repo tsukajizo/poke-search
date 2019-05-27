@@ -4,6 +4,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import net.tsukajizo.pokeserach.data.api.PokeRepository
 import net.tsukajizo.pokeserach.data.pokemon.Pokemon
+import net.tsukajizo.pokeserach.data.pokemon.PokemonInfo
 
 class MainPresenter(val mainView: MainContract.View, val repository: PokeRepository) :
     MainContract.Presenter {
@@ -13,7 +14,7 @@ class MainPresenter(val mainView: MainContract.View, val repository: PokeReposit
     }
 
     var pokemonCount:Int = 0
-    var pokemons:List<Pokemon>? = null
+    var pokemons:List<PokemonInfo>? = null
     var disposable: Disposable? = null;
 
     override fun start() {
@@ -29,7 +30,10 @@ class MainPresenter(val mainView: MainContract.View, val repository: PokeReposit
 
     override fun searchPokemon(pokemonId: Int) {
         disposable?.dispose()
-        if(pokemonId > pokemonCount){
+        if(pokemons == null){
+            return
+        }
+        if(pokemons?.filter { pokemon -> pokemon.url.contains(pokemonId.toString())}!!.isEmpty()){
             mainView.showAlertErrorSearch(pokemonId)
             return
         }
@@ -48,6 +52,9 @@ class MainPresenter(val mainView: MainContract.View, val repository: PokeReposit
 
     override fun searchPokemon(pokemonName: String) {
         disposable?.dispose()
+        if(pokemons == null){
+            return
+        }
         if(pokemons?.filter { pokemon -> pokemon.name == pokemonName}!!.isEmpty()){
             mainView.showAlertErrorSearch(pokemonName)
             return
@@ -63,6 +70,10 @@ class MainPresenter(val mainView: MainContract.View, val repository: PokeReposit
             .subscribe({ response ->
                 mainView.showPokemon(response)
             })
+    }
+
+    override fun dispose() {
+        disposable?.dispose()
     }
 
 

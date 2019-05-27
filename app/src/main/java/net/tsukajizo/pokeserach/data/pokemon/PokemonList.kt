@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class PokemonList(
     @SerializedName("count")  val count:Int,
-    @SerializedName("results")  val results:List<Pokemon>
+    @SerializedName("results")  val results:List<PokemonInfo>
 )
