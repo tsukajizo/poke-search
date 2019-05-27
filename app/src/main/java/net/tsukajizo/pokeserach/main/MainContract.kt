@@ -7,7 +7,7 @@ import net.tsukajizo.pokeserach.data.pokemon.Pokemon
 interface MainContract {
 
     interface View : BaseView<Presenter> {
-        fun showSearchedPokemon(pokemon: Pokemon)
+        fun showPokemon(pokemon: Pokemon)
 
         fun showAlertErrorSearch(name :String)
 

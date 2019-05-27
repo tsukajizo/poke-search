@@ -41,7 +41,7 @@ class MainPresenter(val mainView: MainContract.View, val repository: PokeReposit
                 Pokemon.getUnknownPokemon()
             }
             .subscribe({ response ->
-                mainView.showSearchedPokemon(response)
+                mainView.showPokemon(response)
             })
 
     }
@@ -61,7 +61,7 @@ class MainPresenter(val mainView: MainContract.View, val repository: PokeReposit
                 Pokemon.getUnknownPokemon()
             }
             .subscribe({ response ->
-                mainView.showSearchedPokemon(response)
+                mainView.showPokemon(response)
             })
     }
 

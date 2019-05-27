@@ -62,8 +62,12 @@ class MainActivity : AppCompatActivity() , MainContract.View {
         presenter.start()
     }
 
-    override fun showSearchedPokemon(pokemon: Pokemon) {
+    fun clearPokemon(){
+        showPokemon(Pokemon.getUnknownPokemon())
+    }
 
+
+    override fun showPokemon(pokemon: Pokemon) {
         pokeId.text = if(!Pokemon.isUnknown(pokemon)) pokemon.id.toString() else "???"
         pokeName.text =  if(!Pokemon.isUnknown(pokemon)) pokemon.name else "???"
         if(!Pokemon.isUnknown(pokemon)) {
@@ -77,12 +81,12 @@ class MainActivity : AppCompatActivity() , MainContract.View {
 
     override fun showAlertErrorSearch(name: String) {
         error.text = String.format(getString(R.string.error_name_not_found),name)
-        showSearchedPokemon(Pokemon.getUnknownPokemon())
+        showPokemon(Pokemon.getUnknownPokemon())
     }
 
     override fun showAlertErrorSearch(id: Int) {
         error.text = String.format(getString(R.string.error_id_not_found),id)
-        showSearchedPokemon(Pokemon.getUnknownPokemon())
+        showPokemon(Pokemon.getUnknownPokemon())
     }
 
     override fun setPresenter(presenter: MainContract.Presenter) {
