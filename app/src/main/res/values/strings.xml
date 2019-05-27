@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">PokeSerach</string>
     <string name="no_item">\???</string>
+    <string name="id_label">&lt;ID No.&gt;</string>
+    <string name="name_label">&lt;name&gt;</string>
     <string name="error_id_not_found">id:%1$d is not found</string>
     <string name="error_name_not_found">name:%1$s is not found</string>
 </resources>
