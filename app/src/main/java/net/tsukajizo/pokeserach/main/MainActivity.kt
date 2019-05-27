@@ -12,6 +12,7 @@ import net.tsukajizo.pokeserach.data.api.PokeRepository
 import net.tsukajizo.pokeserach.data.pokemon.Pokemon
 import net.tsukajizo.pokeserach.util.GlideImageLoader
 import net.tsukajizo.pokeserach.util.NumUtil
+import net.tsukajizo.pokeserach.util.Validator
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -44,7 +45,9 @@ class MainActivity : AppCompatActivity() , MainContract.View {
                 if(input.isBlank()){
                     error.text = ""
                     clearPokemon()
-                }else if(NumUtil.isNum(input)){
+                }else if(!Validator.validateInput(input)){
+                  showAlertInputError()
+                } else if(NumUtil.isNum(input)){
                     presenter.searchPokemon(Integer.parseInt(input))
                 }else{
                     presenter.searchPokemon(input)
@@ -65,7 +68,7 @@ class MainActivity : AppCompatActivity() , MainContract.View {
         presenter.start()
     }
 
-    fun clearPokemon(){
+    private fun clearPokemon(){
         showPokemon(Pokemon.getUnknownPokemon())
     }
 
@@ -90,6 +93,10 @@ class MainActivity : AppCompatActivity() , MainContract.View {
     override fun showAlertErrorSearch(id: Int) {
         error.text = String.format(getString(R.string.error_id_not_found),id)
         showPokemon(Pokemon.getUnknownPokemon())
+    }
+
+    private fun showAlertInputError(){
+        error.text = getString(R.string.error_input_incorrect_string)
     }
 
     override fun setPresenter(presenter: MainContract.Presenter) {
