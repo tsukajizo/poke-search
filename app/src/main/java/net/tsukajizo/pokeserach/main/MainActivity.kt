@@ -41,7 +41,10 @@ class MainActivity : AppCompatActivity() , MainContract.View {
             override fun afterTextChanged(s: Editable?) {
                 error.text = ""
                 val input = s.toString()
-                if(NumUtil.isNum(input)){
+                if(input.isBlank()){
+                    error.text = ""
+                    clearPokemon()
+                }else if(NumUtil.isNum(input)){
                     presenter.searchPokemon(Integer.parseInt(input))
                 }else{
                     presenter.searchPokemon(input)
