@@ -2,6 +2,10 @@
 Demonstration of MVP architecture
 
 
+<img src="art/screenshot_no_input.png" width="200" /> <img src="art/screenshot_input_id.png" width="200" /> <img src="art/screenshot_input_name.png" width="200" />
+
+- Search pokemon by name
+- Search pokemon by id
 
 ## Credit
 - Kotlin(Jetbrains)
