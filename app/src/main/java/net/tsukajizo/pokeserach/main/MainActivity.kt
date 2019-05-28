@@ -62,16 +62,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
 
     override fun showPokemon(pokemon: Pokemon) {
-        pokeId.text = if (!Pokemon.isUnknown(pokemon)) pokemon.id.toString() else "???"
-        pokeName.text = if (!Pokemon.isUnknown(pokemon)) pokemon.name else "???"
-        if (pokemon.sprites.frontDefault == null) {
+        pokeId.text = if (!Pokemon.isUnknown(pokemon)) pokemon.id.toString() else getString(R.string.no_item)
+        pokeName.text = if (!Pokemon.isUnknown(pokemon)) pokemon.name else getString(R.string.no_item)
+        if (pokemon.sprites.frontDefault == null || Pokemon.isUnknown(pokemon)) {
             pokeImage.setImageDrawable(getDrawable(R.mipmap.unknown_image))
-        } else if (!Pokemon.isUnknown(pokemon)) {
-            error.text = ""
+        } else {
             val loader = GlideImageLoader()
             loader.load(pokeImage, pokemon.sprites.frontDefault)
-        } else {
-            pokeImage.setImageDrawable(getDrawable(R.mipmap.unknown_image))
         }
     }
 
