@@ -2,7 +2,7 @@ package net.tsukajizo.pokeserach.data.api
 
 import io.reactivex.Single
 import net.tsukajizo.pokeserach.data.pokemon.Pokemon
-import net.tsukajizo.pokeserach.data.pokemon.PokemonList
+import net.tsukajizo.pokeserach.data.pokemon.PokemonIndex
 
 class PokeRepository (val api:PokeApi){
     fun searchPokemon(id:Int):Single<Pokemon>{
@@ -13,7 +13,7 @@ class PokeRepository (val api:PokeApi){
         return api.fetchPokemon(name)
     }
 
-    fun fetchPokemonList() :Single<PokemonList>{
+    fun fetchPokemonList(): Single<PokemonIndex> {
         return api.fetchPokemonList()
     }
 }
