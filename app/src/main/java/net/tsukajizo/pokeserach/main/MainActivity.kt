@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             val loader = GlideImageLoader()
             loader.load(pokeImage, pokemon.sprites.frontDefault)
         } else {
-            pokeImage.setImageBitmap(null)
+            pokeImage.setImageDrawable(getDrawable(R.mipmap.unknown_image))
         }
     }
 

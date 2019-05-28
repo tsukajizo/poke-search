@@ -6,4 +6,5 @@
     <string name="error_id_not_found">ID No.%1$d is not found</string>
     <string name="error_name_not_found">name:%1$s is not found</string>
     <string name="error_input_incorrect_string">please input name or id</string>
+    <string name="input_hint">Input Pokemon name or id</string>
 </resources>
